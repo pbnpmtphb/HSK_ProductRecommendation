@@ -4,4 +4,4 @@ pandas
 matplotlib
 seaborn
 scikit-learn
-surprise
+surprise==1.1.0 
