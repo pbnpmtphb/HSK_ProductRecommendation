@@ -17,11 +17,11 @@ with open('KNNWithMeans.pkl', 'rb') as f:
 with open('cosine_sim.pkl', 'rb') as f:
     cosine_sim_new = pickle.load(f)
 
-## Top 10 products
+## Top 9 products
 top_products = (
     df_comment['ma_san_pham']
     .value_counts()
-    .head(10)
+    .head(9)
     .reset_index()
     .rename(columns={'index': 'Mã sản phẩm', 'ma_san_pham': 'Số lượt mua'})
 )
@@ -64,7 +64,7 @@ def get_recommendation_collab(content, df_collab, df_product, df_product_details
     result = df_recommendations.merge(df_product[["ma_san_pham", "ten_san_pham"]], on="ma_san_pham", how="left")
     result.rename(columns={"ma_san_pham": "ID sản phẩm", "ten_san_pham": "Tên sản phẩm", "EstimateScore": "Dự đoán đánh giá"}, inplace=True)
     result = result[["ID sản phẩm", "Tên sản phẩm", "Dự đoán đánh giá"]]
-    result = result.head(10)
+    result = result.head(9)
     # Merge
     result = pd.merge(
         result,
@@ -73,9 +73,10 @@ def get_recommendation_collab(content, df_collab, df_product, df_product_details
         right_on='productid',
         how='left'
     )
+    result["Dự đoán đánh giá"] = result["Dự đoán đánh giá"].round(1)
     return result[['ID sản phẩm', 'Tên sản phẩm', 'Dự đoán đánh giá', 'url']]
 
-def get_recommendation_content(product_id, cosine_sim, nums=10, min_rating=3.0):
+def get_recommendation_content(product_id, cosine_sim, nums=9, min_rating=3.0):
     if product_id not in df_product['ma_san_pham'].values:
         return f"Product ID {product_id} not found in the dataset."
     idx = df_product[df_product['ma_san_pham'] == product_id].index[0]   
@@ -168,19 +169,19 @@ elif choice == "Tìm sản phẩm phù hợp":
     st.markdown("""
         <style>
         .custom-label {
-            font-size: 20px;
+            font-size: 30px;
             font-weight: bold;
             color: #4CAF50;
             font-family: 'Arial', sans-serif;
         }
         .error-label {
-            font-size: 20px;
+            font-size: 30px;
             font-weight: bold;
             color: red;
             font-family: 'Arial', sans-serif;
         }
         .info-label {
-            font-size: 20px;
+            font-size: 30px;
             font-weight: bold;
             color: black;
             font-family: 'Arial', sans-serif;
@@ -202,40 +203,45 @@ elif choice == "Tìm sản phẩm phù hợp":
             st.markdown("""
             <p class="info-label">Hãy tạo tài khoản để mua những sản phẩm bán chạy nhất của Hasaki nhé!</p>
             """, unsafe_allow_html=True)
-            st.dataframe(
-                df_result,
-                column_config={
-                    'ID sản phẩm': 'ID sản phẩm',
-                    'name': 'Tên sản phẩm',
-                    'Số lượt mua': 'Số lượt mua',
-                    'diem_trung_binh': 'Đánh giá sao',
-                    'url': st.column_config.LinkColumn('Link mua sản phẩm')
-                },
-                hide_index=True
-            )
+            row1 = st.columns(3)
+            row2 = st.columns(3)
+            row3 = st.columns(3)
+            rows = [row1, row2, row3]
+            for i, col in enumerate(row1 + row2 + row3):
+                if i < len(df_result):
+                    product = df_result.iloc[i]
+                    with col:
+                        st.subheader(product['name'])  
+                        st.markdown(f"**ID sản phẩm:** {product['Mã sản phẩm']}")  
+                        st.markdown(f"**Số lượt mua:** {product['Số lượt mua']}")
+                        st.markdown(f"**Điểm trung bình:** {product['diem_trung_binh']} ⭐")  
+                        st.markdown(f"[Xem sản phẩm]({product['url']})")  
+
         else:
             st.markdown(f"""
-            <p class="info-label">Xin chào khách hàng với ID: <strong>{content}</strong>!</p>
+            <p class="custom-label">Xin chào khách hàng với ID: <strong>{content}</strong>!</p>
             """, unsafe_allow_html=True)  
             recommendations = get_recommendation_collab(content, df_collab, df_product, df_product_details)
             st.markdown("""
             <p class="info-label">Bạn có hứng thú với những sản phẩm bên dưới không?</p>
             """, unsafe_allow_html=True)
-            st.dataframe(
-                recommendations,
-                column_config={
-                    'Mã sản phẩm': 'ID sản phẩm',
-                    'Tên sản phẩm': 'Tên sản phẩm',
-                    'Dự đoán đánh giá': 'Dự đoán đánh giá',
-                    'url': st.column_config.LinkColumn('Link mua sản phẩm')
-                },
-                hide_index=True
-            )
+            row4 = st.columns(3)
+            row5 = st.columns(3)
+            row6 = st.columns(3)
+            rows = [row4, row5, row6]
+            for i, col in enumerate(row4 + row5 + row6):
+                if i < len(recommendations):
+                    product1 = recommendations.iloc[i]
+                    with col:
+                        st.subheader(product1['Tên sản phẩm'])  
+                        st.markdown(f"**ID sản phẩm:** {product1['ID sản phẩm']}")  
+                        st.markdown(f"**Dự đoán đánh giá:** {product1['Dự đoán đánh giá']} ⭐")  
+                        st.markdown(f"[Xem sản phẩm]({product1['url']})")  
             st.divider()
+
             st.markdown(f"""
             <p class="info-label">Vẫn chưa tìm thấy sản phẩm bạn thích? Hãy chọn sản phẩm trong danh sách dưới đây!</p>
             """, unsafe_allow_html=True)
-            
             product_names = df_product['ten_san_pham'].unique()
             selected_product = st.selectbox("Chọn sản phẩm:", product_names)
             product_description = df_product.loc[df_product['ten_san_pham'] == selected_product, 'mo_ta'].values
@@ -255,13 +261,15 @@ elif choice == "Tìm sản phẩm phù hợp":
             <p class="info-label">Cùng xem một số sản phẩm tương tự sản phẩm bạn đã chọn nhé!</p>
             """, unsafe_allow_html=True)
             recommendations_1 = get_recommendation_content(product_id, cosine_sim=cosine_sim_new, nums=10, min_rating=3.0)
-            st.dataframe(
-                recommendations_1,
-                column_config={
-                    'ma_san_pham': 'ID sản phẩm',
-                    'ten_san_pham': 'Tên sản phẩm',
-                    'diem_trung_binh': 'Đánh giá sao',
-                    'url': st.column_config.LinkColumn('Link mua sản phẩm')
-                },
-                hide_index=True
-            )
+            row7 = st.columns(3)
+            row8 = st.columns(3)
+            row9 = st.columns(3)
+            rows = [row7, row8, row9]
+            for i, col in enumerate(row7 + row8 + row9):
+                if i < len(recommendations_1):
+                    product2 = recommendations_1.iloc[i]
+                    with col:
+                        st.subheader(product2['ten_san_pham'])  
+                        st.markdown(f"**ID sản phẩm:** {product2['ma_san_pham']}")  
+                        st.markdown(f"**Điểm trung bình:** {product2['diem_trung_binh']} ⭐")  
+                        st.markdown(f"[Xem sản phẩm]({product2['url']})")  
