@@ -260,7 +260,7 @@ elif choice == "Các phương pháp đề xuất":
     </p>
     """, unsafe_allow_html=True)
     st.markdown("""
-    <p class="info-label-2">Khách hàng C đã mua <b>kem chống nắng</b> và <b>tẩy trang</b>.</p>
+    <p class="info-label-2">Khách hàng A đã mua <b>kem chống nắng</b> và <b>tẩy trang</b>.</p>
     """, unsafe_allow_html=True)
     st.markdown("""
     <p class="info-label-2">Khách hàng B đã mua <b>kem chống nắng</b>.</p>
