@@ -229,7 +229,46 @@ elif choice == "Các phương pháp đề xuất":
     st.markdown("""
     <p class="info-label-2"><b>- Các sản phẩm sẽ được lọc theo chỉ số Cosine Similarity từ cao đến thấp, và loại các sản phẩm có đánh giá trung bình dưới 3 sao.</p>
     """, unsafe_allow_html=True)
-
+    st.markdown("""
+    <p class="title-label-2">Về phương pháp collaborative filtering</p>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    <p class="info-label-2">Collaborative Filtering là một phương pháp dựa trên lịch sử mua hàng để dự đoán sở thích của khách hàng.</p>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    <p class="info-label-2">Thay vì phân tích sản phẩm, phương pháp này tập trung vào hành vi người dùng, tận dụng mối quan hệ giữa các khách hàng hoặc các sản phẩm.</p>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    <p class="custom-label-2">Logic hoạt động của Collaborative Filtering</p>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    <p class="info-label-2"><b>1. Tiền xử lý dữ liệu mã sản phẩm, ID khách hàng, sao đánh giá</b></p>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    <p class="info-label-2">- Qua tìm hiểu, ta thấy đa số các sản phẩm được đánh giá 5 sao.</p>
+    """, unsafe_allow_html=True)
+    st.image("count_rating.png", use_column_width=True)
+    st.markdown("""
+    <p class="info-label-2">- Để kết quả của thuật toán được chính xác hơn và tập trung vào những người dùng có đóng góp lớn, ta <b>loại bỏ các sản phẩm được đánh giá dưới 5 lần</b> (không nhiều nhận xét từ người dùng), và <b>những người dùng chỉ đánh giá dưới 2 lần</b> (người dùng không hoạt động quá sôi nổi).
+    </p>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    <p class="info-label-2"><b>2. Logic hoạt động chung</b></p>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    <p class="info-label-2">Ví dụ:
+    </p>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    <p class="info-label-2">Khách hàng C đã mua <b>kem chống nắng</b> và <b>tẩy trang</b>.</p>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    <p class="info-label-2">Khách hàng B đã mua <b>kem chống nắng</b>.</p>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    <p class="info-label-2">Hệ thống gợi ý <b>tẩy trang</b> cho khách hàng B vì hành vi mua sắm của B giống với A.</p>
+    """, unsafe_allow_html=True)
+    
 elif choice == "Tìm sản phẩm phù hợp":
     st.markdown("""
         <style>
