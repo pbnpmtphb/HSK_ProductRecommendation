@@ -215,7 +215,44 @@ elif choice == "Tìm sản phẩm phù hợp":
                         st.markdown(f"**ID sản phẩm:** {product['Mã sản phẩm']}")  
                         st.markdown(f"**Số lượt mua:** {product['Số lượt mua']}")
                         st.markdown(f"**Điểm trung bình:** {product['diem_trung_binh']} ⭐")  
-                        st.markdown(f"[Xem sản phẩm]({product['url']})")  
+                        st.markdown(f"[Xem sản phẩm]({product['url']})")
+            st.divider()
+
+            # Content base
+            st.markdown(f"""
+            <p class="info-label">Hãy chọn sản phẩm trong danh sách dưới đây để tham khảo nhanh nhé!</p>
+            """, unsafe_allow_html=True)
+            product_names = df_product['ten_san_pham'].unique()
+            selected_product = st.selectbox("Chọn sản phẩm:", product_names)
+            product_description = df_product.loc[df_product['ten_san_pham'] == selected_product, 'mo_ta'].values
+            if len(product_description) > 0:
+                product_description = df_product.loc[df_product['ten_san_pham'] == selected_product, 'mo_ta'].values[0]
+                product_url = df_product_details.loc[df_product_details['productid'] == df_product.loc[df_product['ten_san_pham'] == selected_product, 'ma_san_pham'].values[0], 'url'].values[0]
+                product_id = df_product.loc[df_product['ten_san_pham'] == selected_product, 'ma_san_pham'].values[0]
+
+                st.write(f"Sản phẩm bạn đã chọn là: {selected_product}")
+                st.markdown(f"[Xem sản phẩm chi tiết tại đây]({product_url})")
+                with st.expander("Mô tả sản phẩm", expanded=False):
+                    st.write(product_description)
+            else:
+                st.write("Thông tin sản phẩm không khả dụng.")
+            
+            st.markdown(f"""
+            <p class="info-label">Cùng xem một số sản phẩm tương tự sản phẩm bạn đã chọn nhé!</p>
+            """, unsafe_allow_html=True)
+            recommendations_1 = get_recommendation_content(product_id, cosine_sim=cosine_sim_new, nums=10, min_rating=3.0)
+            row10 = st.columns(3)
+            row11 = st.columns(3)
+            row12 = st.columns(3)
+            rows = [row10, row11, row12]
+            for i, col in enumerate(row10 + row11 + row12):
+                if i < len(recommendations_1):
+                    product2 = recommendations_1.iloc[i]
+                    with col:
+                        st.subheader(product2['ten_san_pham'])  
+                        st.markdown(f"**ID sản phẩm:** {product2['ma_san_pham']}")  
+                        st.markdown(f"**Điểm trung bình:** {product2['diem_trung_binh']} ⭐")  
+                        st.markdown(f"[Xem sản phẩm]({product2['url']})")  
 
         else:
             st.markdown(f"""
