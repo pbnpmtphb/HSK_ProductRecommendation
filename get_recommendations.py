@@ -291,7 +291,7 @@ elif choice == "Tìm sản phẩm phù hợp":
             font-family: 'Arial', sans-serif;
         }
         </style>
-        <p class="custom-label">Nhập ID để đăng nhập: Ví dụ: ID của bạn là "47"</p>
+        <p class="custom-label">Nhập ID để đăng nhập: Ví dụ: ID của bạn là "123"</p>
     """, unsafe_allow_html=True)
     
     content = st.text_area(label="", height=68)
