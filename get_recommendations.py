@@ -106,7 +106,7 @@ def get_recommendation_content(product_id, cosine_sim, nums=9, min_rating=3.0):
 ## Streamlit interface
 st.image("hasaki_banner.jpg", use_column_width=True)
 
-menu = ["Về dự án", "Tìm sản phẩm phù hợp"]
+menu = ["Về dự án", "Các phương pháp đề xuất","Tìm sản phẩm phù hợp"]
 choice = st.sidebar.selectbox('Danh mục', menu)
 st.sidebar.write("""#### Thành viên thực hiện:
                  Phạm Bích Nhật và Lương Nhã Hoàng Hà""")
@@ -163,6 +163,71 @@ if choice == 'Về dự án':
     """, unsafe_allow_html=True)
     st.markdown("""
     <p class="info-label-1"><b>Giữ chân khách hàng:</b> Gắn kết người dùng lâu dài với nền tảng thông qua trải nghiệm mua sắm thông minh.</p>
+    """, unsafe_allow_html=True)
+
+elif choice == "Các phương pháp đề xuất":
+    st.markdown("""
+        <style>
+        .title-label-2 {
+            font-size: 30px;
+            font-weight: bold;
+            color: red;
+            font-family: 'Arial', sans-serif;
+        }
+        .custom-label-2 {
+            font-size: 30px;
+            font-weight: bold;
+            color: #4CAF50;
+            font-family: 'Arial', sans-serif;
+        }
+        .info-label-2 {
+            font-size: 20px;
+            font-weight: normal;
+            color: black;
+            font-family: 'Arial', sans-serif;
+        }
+        </style>
+        <p class="title-label-2">Về phương pháp content-based filtering</p>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    <p class="info-label-2">Cosine Similarity là một thuật toán lý tưởng để xử lý dữ liệu văn bản lớn và phân tích ngữ nghĩa.</p>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    <p class="info-label-2">Thuật toán này giúp chúng ta trả lời một câu hỏi quan trọng: <b>Mô tả của hai sản phẩm này giống nhau đến mức nào?</b></p>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    <p class="custom-label-2">Cách hoạt động của Cosine Similarity khi phân tích mô tả sản phẩm</p>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    <p class="info-label-2"><b>1. Tiền xử lý dữ liệu mô tả sản phẩm</b></p>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    <p class="info-label-2">- Đa số các mô tả có khoảng 150 từ đến 300 từ. Vì vậy, chọn ra 300 từ đầu tiên của mỗi mô tả để phân tích.</p>
+    """, unsafe_allow_html=True)
+    st.image("word_count.jpg", use_column_width=True)
+    st.markdown("""
+    <p class="info-label-2"><b>- Loại bỏ một số từ không liên quan trong mô tả và chuyển mô tả thành vector số.</p>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    <p class="info-label-2">Văn bản 1: Kem dưỡng ẩm dành cho da khô.</p>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    <p class="info-label-2">Văn bản 2: Sữa dưỡng thể phù hợp với da khô.</p>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    <p class="info-label-2">Các từ giữ lại trong 2 văn bản: [kem] [dưỡng] [ẩm] [sữa] [thể] [da] [khô].</p>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    <p class="info-label-2">Văn bản 1: [1 1 1 0 0 1 1].</p>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    <p class="info-label-2">Văn bản 2: [0 1 0 1 1 1 1].</p>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    <p class="info-label-2">Độ tương đồng (Cosine Similarity) lên tới 0.6.</p>
+    """, unsafe_allow_html=True)
+    st.markdown("""
+    <p class="info-label-2"><b>- Các sản phẩm sẽ được lọc theo chỉ số Cosine Similarity từ cao đến thấp, và loại các sản phẩm có đánh giá trung bình dưới 3 sao.</p>
     """, unsafe_allow_html=True)
 
 elif choice == "Tìm sản phẩm phù hợp":
