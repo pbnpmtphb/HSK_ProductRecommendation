@@ -260,7 +260,7 @@ elif choice == "Các phương pháp đề xuất":
     </p>
     """, unsafe_allow_html=True)
     st.markdown("""
-    <p class="info-label-2">Khách hàng A đã mua <b>kem chống nắng</b> và <b>tẩy trang</b>.</p>
+    <p class="info-label-2">Khách hàng C đã mua <b>kem chống nắng</b> và <b>tẩy trang</b>.</p>
     """, unsafe_allow_html=True)
     st.markdown("""
     <p class="info-label-2">Khách hàng B đã mua <b>kem chống nắng</b>.</p>
@@ -291,7 +291,7 @@ elif choice == "Tìm sản phẩm phù hợp":
             font-family: 'Arial', sans-serif;
         }
         </style>
-        <p class="custom-label">Nhập ID để đăng nhập: Ví dụ: ID của bạn là "123"</p>
+        <p class="custom-label">Nhập ID để đăng nhập:</p>
     """, unsafe_allow_html=True)
     
     content = st.text_area(label="", height=68)
